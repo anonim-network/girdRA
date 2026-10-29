@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Фортуна дөңгөлөгү — Гидра</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Unicial:wght@500;700&family=EB+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#d4a536;--gold2:#f3d77a;--dgold:#8a6414;--ink:#2b1a0b;--wood:#4a2c12;--red:#8b1a1a;--green:#2f6b2f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--head:'Cormorant Unicial','Palatino Linotype',Georgia,serif;--body:'EB Garamond',Georgia,'Times New Roman',serif}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:#150d07}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:var(--body);font-size:18px;color:var(--ink);background:radial-gradient(ellipse at 50% 0%,rgba(212,165,54,.25),transparent 55%),repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 2px,transparent 2px 46px),repeating-linear-gradient(90deg,rgba(0,0,0,.2) 0 2px,transparent 2px 92px),linear-gradient(180deg,#2a1a0e,#150d07 70%)}
+.hide{display:none!important}
+header{text-align:center;padding:22px 12px 6px}
+h1{font-family:var(--head);font-weight:700;font-size:clamp(2rem,6vw,3.4rem);margin:0;letter-spacing:.04em;color:var(--gold2);text-shadow:0 2px 0 #5a3a08,0 4px 14px rgba(0,0,0,.8),0 0 24px rgba(212,165,54,.45)}
+.orn{color:var(--gold);letter-spacing:.6em;font-size:1rem;margin:2px 0}
+.sub{margin:4px auto 0;max-width:640px;color:#e8d4a0;font-style:italic;font-size:1.05rem;padding:0 10px}
+.wrap{max-width:1040px;margin:0 auto;padding:14px 12px 30px;display:flex;flex-wrap:wrap;gap:22px;justify-content:center;align-items:flex-start}
+.scroll{position:relative;background:radial-gradient(ellipse at 20% 10%,rgba(255,255,255,.35),transparent 50%),linear-gradient(135deg,#f5e6bd,#e6cf94 55%,#dcc080);border:4px double var(--dgold);border-radius:10px;padding:18px;box-shadow:0 0 0 3px var(--wood),0 0 0 5px var(--gold),0 12px 30px rgba(0,0,0,.65),inset 0 0 50px rgba(110,70,15,.4)}
+.scroll:before,.scroll:after{content:"⚜";position:absolute;color:var(--dgold);font-size:1.3rem;line-height:1}
+.scroll:before{top:4px;left:8px}.scroll:after{top:4px;right:8px}
+.wheelbox{flex:1 1 440px;max-width:560px;text-align:center}
+.cv{position:relative;width:100%;max-width:490px;margin:10px auto 0}
+canvas{width:100%;height:auto;display:block}
+#cv{filter:drop-shadow(0 8px 14px rgba(0,0,0,.55))}
+#cv.pop{animation:cvpop .7s ease-out}
+@keyframes cvpop{0%{transform:scale(1)}35%{transform:scale(1.05)}100%{transform:scale(1)}}
+#cf{position:absolute;inset:0;pointer-events:none}
+.ptr{position:absolute;top:-14px;left:50%;transform:translateX(-50%);transform-origin:50% 0;transition:transform .07s;z-index:2;width:0;height:0;border-left:19px solid transparent;border-right:19px solid transparent;border-top:44px solid var(--gold);filter:drop-shadow(0 3px 3px rgba(0,0,0,.6))}
+.ptr:after{content:"";position:absolute;left:-8px;top:-40px;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a8a,#8b1a1a 70%);box-shadow:0 0 6px rgba(0,0,0,.6)}
+button{font-family:var(--head);font-weight:700;font-size:1.05rem;cursor:pointer;border-radius:6px;border:2px solid var(--dgold);background:linear-gradient(180deg,#f4e3b0,#d9bd7a);color:var(--ink);padding:7px 14px;box-shadow:0 2px 0 #7a5410;transition:transform .1s,filter .15s}
+button:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px)}
+button:active:not(:disabled){transform:translateY(1px);box-shadow:none}
+button.pri{background:linear-gradient(180deg,#b32525,#6e1010);border-color:#3d0808;color:var(--gold2);text-shadow:0 1px 2px #000;box-shadow:0 3px 0 #2d0505,0 0 0 2px var(--gold)}
+button:disabled{opacity:.55;cursor:not-allowed}
+#spin{margin-top:16px;font-size:1.4rem;padding:12px 30px;letter-spacing:.04em}
+.side{flex:1 1 320px;max-width:480px}
+.side h2{font-family:var(--head);margin:0 0 10px;text-align:center;font-size:1.6rem;color:var(--red);text-shadow:0 1px 0 rgba(255,255,255,.5)}
+.row{display:flex;gap:8px}
+input[type=text]{flex:1;min-width:0;font-family:var(--body);font-size:1.05rem;padding:8px 10px;border-radius:6px;border:2px solid var(--dgold);background:#fbf1d3;color:var(--ink);box-shadow:inset 0 2px 5px rgba(90,60,10,.3)}
+input[type=text]:focus{outline:2px solid var(--gold);outline-offset:1px}
+ul{list-style:none;margin:12px 0 0;padding:0;max-height:300px;overflow:auto;border-top:2px solid var(--dgold);border-bottom:2px solid var(--dgold);background:rgba(255,248,220,.35)}
+li{display:flex;justify-content:space-between;align-items:center;padding:4px 8px;border-bottom:1px dashed rgba(122,84,16,.5);word-break:break-word}
+li:last-child{border:0}
+li button{padding:0 8px;font-size:.95rem;color:var(--red);box-shadow:none}
+.empty{padding:14px;text-align:center;font-style:italic;color:#7a5a24}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:1rem;flex-wrap:wrap;gap:8px}
+label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.left{margin-top:12px;font-size:1.1rem}.left b{font-family:var(--head);font-size:1.5rem;color:var(--red)}
+/* start inscription */
+#startWrap{margin-top:16px;text-align:center}
+.hint{font-style:italic;color:#7a5a24}
+.ready{font-family:var(--head);font-size:1.3rem;color:var(--red);margin-bottom:6px;animation:fadeup .6s ease-out}
+#start{font-size:clamp(1.5rem,6vw,2.2rem);padding:14px 30px;letter-spacing:.05em;animation:fadeup .7s ease-out,glow 1.8s ease-in-out .7s infinite}
+@keyframes fadeup{from{opacity:0;transform:translateY(18px) scale(.85)}to{opacity:1;transform:none}}
+@keyframes glow{0%,100%{box-shadow:0 3px 0 #2d0505,0 0 0 2px var(--gold),0 0 8px rgba(243,215,122,.3)}50%{box-shadow:0 3px 0 #2d0505,0 0 0 2px var(--gold2),0 0 28px rgba(243,215,122,.95)}}
+/* winner announce */
+#ann{margin-top:14px;min-height:78px}
+.annname{font-family:var(--head);font-size:clamp(1.5rem,5vw,2.1rem);font-weight:700;color:var(--red);word-break:break-word;animation:fadeup .5s ease-out;text-shadow:0 1px 0 rgba(255,255,255,.5)}
+.anncd{font-size:1.1rem;margin-top:2px}
+.bar{height:10px;border:2px solid var(--dgold);border-radius:6px;background:rgba(255,248,220,.5);margin:8px auto 0;max-width:340px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#b32525,#d4a536)}
+.stbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+/* overlays */
+.ov{position:fixed;inset:0;background:radial-gradient(circle,rgba(30,15,5,.8),rgba(0,0,0,.92));display:none;align-items:center;justify-content:center;padding:14px;z-index:9}
+.ov.on{display:flex}
+.modal{width:100%;max-width:580px;max-height:92vh;overflow:auto;animation:pop .35s ease-out}
+@keyframes pop{from{transform:scale(.8) rotate(-2deg);opacity:0}to{transform:none;opacity:1}}
+.who{font-family:var(--head);font-size:clamp(1.6rem,6vw,2.3rem);font-weight:700;color:var(--red);text-align:center;margin:6px 0 2px;word-break:break-word;text-shadow:0 1px 0 rgba(255,255,255,.5)}
+.num{text-align:center;font-style:italic;color:#6b4a14;margin-bottom:6px}
+.q{font-family:var(--head);font-size:1.5rem;font-weight:700;text-align:center;margin:10px 0 16px;line-height:1.25}
+.opt{display:block;width:100%;text-align:left;margin-bottom:9px;padding:10px 14px;font-family:var(--body);font-weight:600;font-size:1.08rem;box-shadow:0 2px 0 #7a5410}
+.opt:before{content:"❖ ";color:var(--dgold)}
+.opt.ok{background:linear-gradient(180deg,#3f8a3f,#245524);border-color:#123512;color:#fff}
+.opt.bad{background:linear-gradient(180deg,#b32525,#6e1010);border-color:#3d0808;color:#fff}
+.opt.ok:before,.opt.bad:before{color:var(--gold2)}
+.res{text-align:center;font-family:var(--head);font-weight:700;font-size:1.5rem;margin:8px 0;min-height:1.6em}
+#intro{z-index:20;overflow:hidden;background:radial-gradient(circle,#3a1a0a,#050200 75%)}
+#intro:before{content:"";position:absolute;width:260vmax;height:260vmax;left:50%;top:50%;margin:-130vmax 0 0 -130vmax;background:repeating-conic-gradient(rgba(243,215,122,.17) 0 7deg,transparent 7deg 20deg);animation:spinr 22s linear infinite}
+@keyframes spinr{to{transform:rotate(360deg)}}
+#it{position:relative;text-align:center;font-family:var(--head);font-weight:700;color:var(--gold2);text-shadow:0 4px 0 #5a3a08,0 0 40px rgba(243,215,122,.9);padding:0 10px}
+#it span{display:block;animation:boom .7s cubic-bezier(.2,1.6,.4,1)}
+#it .t{font-size:clamp(2.2rem,9vw,5rem);line-height:1.1}
+#it .n{font-size:clamp(7rem,32vw,16rem);line-height:1}
+@keyframes boom{from{transform:scale(.1) rotate(-12deg);opacity:0}to{transform:none;opacity:1}}
+</style>
+</head>
+<body>
+<header>
+  <div class="orn">⚔ ❖ ⚜ ❖ ⚔</div>
+  <h1>Фортуна дөңгөлөгү</h1>
+  <p class="sub">Гидра боюнча билим сынагы. Адегенде аттарды тизмеге жазыңыз.</p>
+</header>
+
+<div class="wrap" id="setup">
+  <div class="scroll side">
+    <h2>📜 Аттар тизмеси</h2>
+    <div class="row"><input id="nm" type="text" maxlength="30" placeholder="Катышуучунун аты…"><button id="add" class="pri">Кошуу</button></div>
+    <div class="meta"><span>Жазылды: <b id="cnt">0</b> / 40</span><label><input type="checkbox" id="rm"> тандалганды өчүрүү</label></div>
+    <ul id="list"></ul>
+    <div class="meta"><button id="clr">Тизмени тазалоо</button></div>
+    <div id="startWrap"></div>
+  </div>
+</div>
+
+<div class="wrap hide" id="stage">
+  <div class="scroll wheelbox">
+    <div class="cv"><div class="ptr" id="ptr"></div><canvas id="cv" width="900" height="900"></canvas><canvas id="cf" width="900" height="900"></canvas></div>
+    <div id="ann"></div>
+    <button id="spin" class="pri">⚔ Айландыр! ⚔</button>
+    <div class="left">Калган суроолор: <b id="left">30</b> / 30</div>
+    <div class="stbtns"><button id="back">← Аттарды өзгөртүү</button><button id="rst">Суроолорду кайра баштоо</button></div>
+  </div>
+</div>
+
+<div class="ov" id="ov"><div class="scroll modal">
+  <div class="orn" style="text-align:center;color:var(--dgold)">❖ ⚜ ❖</div>
+  <p class="who" id="who"></p>
+  <div class="num" id="qn"></div>
+  <div class="q" id="qt"></div>
+  <div id="opts"></div>
+  <div class="res" id="res"></div>
+  <button class="pri" id="close" style="width:100%;display:none">Жабуу</button>
+</div></div>
+
+<div class="ov" id="intro"><div id="it"></div></div>
+
+<script>
+var MAX=40;
+var Q=[
+["Гидра деген эмне?",["Таза сууларда жашаган майда ичеги көңдөйлүү жаныбар","Деңиздеги чоң балык","Сууда өскөн өсүмдүк","Учуучу курт-кумурска"],0],
+["Гидра кайсы жерде жашайт?",["Таза, агымсыз же жай агып турган сууларда","Ысык чөлдө","Тоолордогу мөңгүдө","Жер астындагы үңкүрдө, кургак жерде"],0],
+["Гидра кандай түзүлүшкө ээ?",["Денеси цилиндр сымал: бир учунда таманы, экинчисинде оозу жана мурутчалары бар","Денеси катуу кабык менен капталган","Төрт буту жана куйругу бар","Ички сөөк скелети бар"],0],
+["Гидра эмне менен азыктанат?",["Майда суу жаныбарлары (дафния, циклоп) менен","Чөп жана жалбырак менен","Чоң балыктар менен","Топурак менен"],0],
+["Гидра кантип кыймылдайт?",["Таманы менен жылып же «сальто» жасап","Канаттары менен учуп","Төрт буту менен чуркап","Эч качан кыймылдабайт"],0],
+["Гидранын канча мурутчасы бар?",["Болжол менен 5–12","Бир гана мурутча","Эки мурутча","Жүздөн ашык"],0],
+["Гидра олжосун кантип кармайт?",["Мурутчаларындагы чаккыч клеткалар менен уулап, кармап","Тор токуп","Курч тиштери менен","Кууп жетип, буттары менен"],0],
+["Гидра кантип дем алат?",["Денесинин бүт бети аркылуу","Өпкөсү менен","Желбезектери менен","Трахеялары менен"],0],
+["Гидра кантип көбөйөт?",["Бүчүр берип (жыныссыз) жана жыныстык жол менен","Тирүү төрөп гана","Споралар аркылуу","Гүл чаңы менен"],0],
+["Гидранын денеси канча катмардан турат?",["Эки катмар: эктодерма жана энтодерма","Бир катмар","Үч катмар","Төрт катмар"],0],
+["Гидранын нерв системасы кандай түзүлгөн?",["Тармакталган (диффуздук) нерв системасы","Мээ жана жүлүн бар","Нерв системасы такыр жок","Бир гана чоң нерв түйүнү бар"],0],
+["Гидра жоголгон дене бөлүктөрүн кайра калыбына келтире алабы?",["Ооба, регенерация жөндөмү жогору","Жок, эч качан","Тек гана мурутчасын","Тек гана кыш мезгилинде"],0],
+["Гидранын тамак сиңирүү системасы кандай иштейт?",["Тамак ооз аркылуу ичеги көңдөйүнө түшөт, калдык ошол ооз аркылуу чыгат","Эки тешиги бар: ооз жана аналдык тешик","Ашказан жана узун ичеги бар","Боор жана өт баштыкчасы иштейт"],0],
+["Гидранын жашоосу үчүн кандай шарттар керек?",["Таза, кычкылтекке бай, ылайыктуу жылуулуктагы суу","Кургак жана ысык аба","Өтө шор суу","Тоңгон муз"],0],
+["Гидранын жаратылыштагы мааниси кандай?",["Суунун тазалыгынын көрсөткүчү жана азык чынжырынын звеносу","Адамдарга зыян гана алып келет","Эч кандай мааниси жок","Топуракты жемиштүү кылат"],0]
+,["Гидранын денесинин формасы эмнеге окшош?",["Узун цилиндрге окшош","Жалпак жалбыракка окшош","Тоголок ташка окшош","Канаттуу курт-кумурскага окшош"],0]
+,["Гидранын таманы кандай кызмат аткарат?",["Субстратка жабышууга жардам берет","Тамакты майдалайт","Сууну чыпкалайт","Денени жылытып турат"],0]
+,["Гидранын оозу кайсы жерде жайгашат?",["Денесинин жогорку бөлүгүндө, мурутчалардын ортосунда","Таманынын ичинде","Денесинин капталында гана","Куйругунун учунда"],0]
+,["Гидрадагы чаккыч клеткалар кандай аталат?",["Книдоциттер","Эритроциттер","Нейрондор","Остеоциттер"],0]
+,["Гидранын чаккыч клеткалары негизинен эмне үчүн керек?",["Олжону кармоо жана коргонуу үчүн","Денени кыймылдатуу үчүн","Кычкылтек топтоо үчүн","Жумуртка чыгаруу үчүн"],0]
+,["Гидранын бүчүрү кандайча пайда болот?",["Дененин капталында өсүндү болуп өсөт","Тамандан таш болуп чыгат","Ооздун ичинде пайда болот","Суудан даяр бойдон келет"],0]
+,["Гидранын бүчүрү жетилгенде эмне болот?",["Энеден бөлүнүп, өз алдынча жашай баштайт","Дароо өсүмдүккө айланат","Сууга эрип кетет","Эненин ичинде калат"],0]
+,["Гидра көбүнчө кайсы мезгилде бүчүрлөп көбөйөт?",["Ыңгайлуу шартта, көбүнчө жылуу мезгилде","Ар дайым кышында гана","Суу толук тоңгондо","Кургакчылыкта гана"],0]
+,["Гидранын жыныстык көбөйүүсүндө эмне пайда болот?",["Жыныс клеткалары кошулуп, зигота пайда болот","Жалбырак пайда болот","Кабырчык пайда болот","Тамыр пайда болот"],0]
+,["Гидранын дене көңдөйүнүн өзгөчөлүгү кандай?",["Ал бир эле учурда тамак сиңирүүгө жана заттарды таратууга катышат","Ал сөөктөрдөн турат","Ал аба менен толгон","Ал сыртка жабык өзүнчө капчык"],0]
+,["Гидрада кан айлануу системасы барбы?",["Жок, өзүнчө кан айлануу системасы жок","Ооба, төрт камералуу жүрөгү бар","Ооба, желбезек аркылуу иштейт","Ооба, кан тамырлары өтө узун"],0]
+,["Гидрадагы газ алмашуу кандай жол менен жүрөт?",["Диффузия аркылуу","Жүрөк насосу аркылуу","Желбезек капкактары аркылуу","Өпкө баштыкчалары аркылуу"],0]
+,["Гидранын түсү эмнеге жараша өзгөрүшү мүмкүн?",["Түрүнө жана денесиндеги балырлардын болушуна жараша","Күндүн чыгышына гана","Мурутчаларынын санына гана","Суунун тереңдигине гана"],0]
+,["Гидранын илимий изилдөөлөрдөгү белгилүү касиети кайсы?",["Жогорку регенерация жөндөмү","Өтө тез учушу","Уулуу тиштеринин болушу","Кабыкты алмаштырышы"],0]
+,["Гидранын мурутчаларынын негизги милдети кайсы?",["Олжону сезүү, кармоо жана оозго жеткирүү","Сууну ысытуу","Денеге сөөк түзүү","Жарык чыгаруу"],0]
+];
+var names=[],used=[],rot=0,busy=false,hl=-1,pulse=0;
+var cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+var cf=document.getElementById('cf'),cx=cf.getContext('2d');
+var COLORS=['#8b1a1a','#1f3f8a','#1d5c2e','#5b2a86','#a14a12','#0f5a5a'];
+var HF="'Cormorant Unicial','Palatino Linotype',Georgia,serif",TWO=Math.PI*2;
+function $(i){return document.getElementById(i)}
+function col(i,n){var k=i%COLORS.length;if(i===n-1&&k===0&&n>1)k=3;return COLORS[k]}
+function draw(){
+  var S=cv.width,c=S/2,R=c-8,ring=34,r=R-ring,n=names.length;
+  ctx.clearRect(0,0,S,S);ctx.shadowBlur=0;
+  var g=ctx.createRadialGradient(c,c,r,c,c,R);
+  g.addColorStop(0,'#8a6414');g.addColorStop(.35,'#f3d77a');g.addColorStop(.7,'#d4a536');g.addColorStop(1,'#6b4a0c');
+  ctx.beginPath();ctx.arc(c,c,R,0,TWO);ctx.fillStyle=g;ctx.fill();ctx.lineWidth=3;ctx.strokeStyle='#3d2a06';ctx.stroke();
+  for(var s=0;s<36;s++){
+    var sa=s*TWO/36,sx=c+Math.cos(sa)*(r+ring/2),sy=c+Math.sin(sa)*(r+ring/2);
+    var sg=ctx.createRadialGradient(sx-2,sy-2,1,sx,sy,7);sg.addColorStop(0,'#fff6d0');sg.addColorStop(1,'#7a5410');
+    ctx.beginPath();ctx.arc(sx,sy,6.5,0,TWO);ctx.fillStyle=sg;ctx.fill();
+  }
+  if(!n){
+    ctx.beginPath();ctx.arc(c,c,r,0,TWO);
+    var eg=ctx.createRadialGradient(c,c,20,c,c,r);eg.addColorStop(0,'#5a3a1a');eg.addColorStop(1,'#2a1a0a');
+    ctx.fillStyle=eg;ctx.fill();
+  } else {
+    var seg=TWO/n,gl=null;
+    for(var i=0;i<n;i++){
+      var a=rot+i*seg;
+      ctx.beginPath();ctx.moveTo(c,c);ctx.arc(c,c,r,a,a+seg);ctx.closePath();
+      var sgd=ctx.createRadialGradient(c,c,30,c,c,r),base=col(i,n);
+      sgd.addColorStop(0,'#000');sgd.addColorStop(.18,base);sgd.addColorStop(1,base);
+      ctx.fillStyle=sgd;ctx.fill();
+      if(hl>=0&&i!==hl){ctx.fillStyle='rgba(0,0,0,.55)';ctx.fill()}
+      if(i===hl){ctx.fillStyle='rgba(255,235,140,'+(.15+pulse*.4)+')';ctx.fill();gl=a}
+      ctx.strokeStyle='#e8c660';ctx.lineWidth=2.5;ctx.stroke();
+      ctx.save();ctx.translate(c,c);ctx.rotate(a+seg/2);
+      ctx.fillStyle='#fbefc8';ctx.textAlign='right';ctx.textBaseline='middle';
+      ctx.shadowColor='rgba(0,0,0,.85)';ctx.shadowBlur=4;ctx.shadowOffsetY=1;
+      var fs=Math.max(15,Math.min(46,Math.floor(r*seg*0.62)));
+      ctx.font='bold '+fs+'px '+HF;
+      var t=names[i];if(t.length>15)t=t.slice(0,14)+'…';
+      ctx.fillText(t,r-16,0);ctx.restore();
+    }
+    if(gl!==null){
+      ctx.save();ctx.beginPath();ctx.moveTo(c,c);ctx.arc(c,c,r,gl,gl+seg);ctx.closePath();
+      ctx.shadowColor='#fff0a0';ctx.shadowBlur=18+pulse*28;ctx.lineWidth=5+pulse*5;ctx.strokeStyle='#fff3b0';ctx.stroke();ctx.restore();
+    }
+  }
+  ctx.shadowBlur=0;
+  var hg=ctx.createRadialGradient(c-8,c-8,4,c,c,50);hg.addColorStop(0,'#fff3bd');hg.addColorStop(.6,'#d4a536');hg.addColorStop(1,'#6b4a0c');
+  ctx.beginPath();ctx.arc(c,c,48,0,TWO);ctx.fillStyle=hg;ctx.fill();ctx.lineWidth=4;ctx.strokeStyle='#3d2a06';ctx.stroke();
+  ctx.fillStyle='#5a0f0f';ctx.font='bold 54px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('⚜',c,c+3);
+}
+function renderList(){
+  var ul=$('list');ul.innerHTML='';
+  if(!names.length){var e=document.createElement('li');e.className='empty';e.textContent='Тизме бош…';ul.appendChild(e);return}
+  names.forEach(function(n,i){
+    var li=document.createElement('li');
+    var s=document.createElement('span');s.textContent=(i+1)+'. '+n;
+    var b=document.createElement('button');b.textContent='✕';b.title='Өчүрүү';
+    b.onclick=function(){names.splice(i,1);refresh()};
+    li.appendChild(s);li.appendChild(b);ul.appendChild(li);
+  });
+}
+var startShown=false;
+function renderStart(){
+  var w=$('startWrap'),ok=names.length>=2;
+  if(ok&&!startShown){
+    startShown=true;
+    w.innerHTML='<div class="ready">Тизме даяр!</div><button id="start" class="pri">⚔ Оюнду баштоо ⚔</button>';
+    $('start').onclick=startShow;
+  } else if(!ok){
+    startShown=false;
+    w.innerHTML='<div class="hint">Жок дегенде 2 ат жазыңыз — анан «Оюнду баштоо» чыгат</div>';
+  }
+}
+function refresh(){$('cnt').textContent=names.length;$('left').textContent=Q.length-used.length;renderList();renderStart();draw()}
+function addName(){
+  var v=$('nm').value.trim();if(!v)return;
+  if(names.length>=MAX){alert('Тизмеде '+MAX+' аттан ашык болбошу керек!');return}
+  names.push(v);$('nm').value='';$('nm').focus();refresh();
+}
+$('add').onclick=addName;
+$('nm').onkeydown=function(e){if(e.key==='Enter')addName()};
+$('clr').onclick=function(){names=[];refresh()};
+$('rst').onclick=function(){if(busy)return;used=[];refresh()};
+$('back').onclick=function(){if(busy)return;$('stage').classList.add('hide');$('setup').classList.remove('hide');refresh()};
+
+/* intro show */
+function startShow(){
+  var it=$('it'),steps=[['⚔ Оюн башталат! ⚔','t',1900],['3','n',900],['2','n',900],['1','n',900],['Баштайлы!','t',1000]],k=0;
+  $('intro').classList.add('on');
+  function next(){
+    if(k>=steps.length){
+      $('intro').classList.remove('on');
+      $('setup').classList.add('hide');$('stage').classList.remove('hide');
+      $('ann').innerHTML='';draw();
+      setTimeout(spin,700);return;
+    }
+    var st=steps[k++];it.innerHTML='';
+    var sp=document.createElement('span');sp.className=st[1];sp.textContent=st[0];it.appendChild(sp);
+    setTimeout(next,st[2]);
+  }
+  next();
+}
+/* wheel */
+var lastIdx=-1;
+function flick(){var p=$('ptr');p.style.transform='translateX(-50%) rotate(-24deg)';setTimeout(function(){p.style.transform='translateX(-50%) rotate(0deg)'},75)}
+function idxAt(){var n=names.length,seg=TWO/n,ang=((-Math.PI/2-rot)%TWO+TWO)%TWO;return Math.floor(ang/seg)%n}
+function spin(){
+  if(busy)return;
+  if(names.length<2){alert('Жок дегенде эки ат жазыңыз!');$('back').onclick();return}
+  if(used.length>=Q.length){alert('Бардык 30 суроо берилди! Кайра баштоо үчүн «Суроолорду кайра баштоо» баскычын басыңыз.');return}
+  busy=true;hl=-1;$('spin').disabled=true;$('ann').innerHTML='';
+  var start=rot,total=TWO*(7+Math.random()*3)+Math.random()*TWO,dur=6500,t0=null;lastIdx=idxAt();
+  function step(ts){
+    if(!t0)t0=ts;
+    var p=Math.min(1,(ts-t0)/dur),e=1-Math.pow(1-p,5);
+    rot=start+total*e;draw();
+    var ix=idxAt();if(ix!==lastIdx){lastIdx=ix;flick()}
+    if(p<1)requestAnimationFrame(step);else celebrate(ix);
+  }
+  requestAnimationFrame(step);
+}
+/* stop animation + 5s countdown */
+var parts=[];
+function burst(){
+  var cols=['#f3d77a','#d4a536','#b32525','#2f6bd0','#2f8f4f','#fff'];
+  for(var i=0;i<150;i++){var a=Math.random()*TWO,v=6+Math.random()*12;
+    parts.push({x:450,y:450,vx:Math.cos(a)*v,vy:Math.sin(a)*v-5,r:Math.random()*TWO,vr:(Math.random()-.5)*.4,c:cols[i%cols.length],s:8+Math.random()*10})}
+}
+function confetti(){
+  cx.clearRect(0,0,900,900);
+  parts.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=.28;p.vx*=.992;p.r+=p.vr;
+    cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);cx.restore()});
+  parts=parts.filter(function(p){return p.y<960});
+}
+function celebrate(idx){
+  hl=idx;var cvEl=$('cv');cvEl.classList.remove('pop');void cvEl.offsetWidth;cvEl.classList.add('pop');
+  burst();
+  var nm=names[idx];
+  $('ann').innerHTML='<div class="annname"></div><div class="anncd"></div><div class="bar"><i id="bi"></i></div>';
+  $('ann').firstChild.textContent='⚜ Тандалды: '+nm+' ⚜';
+  var cd=$('ann').children[1],bi=$('bi'),t0=null,TOT=5000,burst2=false;
+  function step(ts){
+    if(!t0)t0=ts;var el=ts-t0;
+    pulse=(Math.sin(el/140)+1)/2;draw();confetti();
+    if(el>1500&&!burst2){burst2=true;burst()}
+    var left=Math.max(0,Math.ceil((TOT-el)/1000));
+    cd.textContent='Суроого чейин: '+left+' сек';
+    bi.style.width=Math.min(100,el/TOT*100)+'%';
+    if(el<TOT)requestAnimationFrame(step);else{
+      hl=-1;pulse=0;parts=[];cx.clearRect(0,0,900,900);draw();ask(idx);
+    }
+  }
+  requestAnimationFrame(step);
+}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function ask(idx){
+  var pool=[];for(var i=0;i<Q.length;i++)if(used.indexOf(i)<0)pool.push(i);
+  var qi=pool[Math.floor(Math.random()*pool.length)];
+  used.push(qi);
+  var q=Q[qi],nm=names[idx];
+  $('who').textContent='⚔ '+nm+' ⚔';
+  $('qn').textContent='Сынак '+used.length+' / '+Q.length;
+  $('qt').textContent=q[0];
+  $('res').textContent='';$('close').style.display='none';
+  var box=$('opts');box.innerHTML='';
+  var order=shuffle(q[1].map(function(t,i){return{t:t,c:i===q[2]}}));
+  var btns=[];
+  order.forEach(function(o){
+    var b=document.createElement('button');b.className='opt';b.textContent=o.t;
+    b.onclick=function(){
+      btns.forEach(function(x,k){x.disabled=true;x.style.opacity=1;if(order[k].c)x.classList.add('ok')});
+      if(!o.c)b.classList.add('bad');
+      $('res').textContent=o.c?'⚜ Туура! Даңк сизге! ⚜':'☠ Туура эмес';
+      $('res').style.color=o.c?'var(--green)':'var(--red)';
+      $('close').style.display='block';
+      $('close').onclick=function(){
+        $('ov').classList.remove('on');
+        if($('rm').checked)names.splice(idx,1);
+        busy=false;$('spin').disabled=false;$('ann').innerHTML='';refresh();
+        if(used.length>=Q.length)setTimeout(function(){alert('🏰 Гидра тууралуу бардык 30 суроо берилди! Жаңы оюн үчүн «Суроолорду кайра баштоо» баскычын басыңыз.')},200);
+        else if(names.length<2)setTimeout(function(){alert('Тизмеде аттар жетишсиз. Жаңы аттарды жазыңыз.');$('back').onclick()},200);
+      };
+    };
+    btns.push(b);box.appendChild(b);
+  });
+  $('ov').classList.add('on');
+}
+$('spin').onclick=spin;
+refresh();
+if(document.fonts&&document.fonts.load){document.fonts.load("bold 30px 'Cormorant Unicial'").then(draw,function(){});document.fonts.ready.then(draw)}
+</script>
+</body>
+</html>
